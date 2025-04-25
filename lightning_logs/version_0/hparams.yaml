@@ -1,0 +1,5 @@
+embed_dim: 100
+hidden_dim: 128
+lr: 0.001
+output_dim: 4
+vocab_size: 20001
