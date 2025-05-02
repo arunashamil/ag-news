@@ -1,0 +1,48 @@
+import pytorch_lightning as pl
+import torch.nn as nn
+import torch
+
+from sklearn.metrics import accuracy_score
+
+class TextClassificationModel(pl.LightningModule):
+        def __init__(self, vocab_size, embed_dim, hidden_dim, output_dim, lr=1e-3):
+            super().__init__()
+            self.save_hyperparameters()
+            self.embedding = nn.Embedding(vocab_size, embed_dim)
+            self.lstm = nn.LSTM(embed_dim, hidden_dim, batch_first=True)
+            self.fc = nn.Linear(hidden_dim, output_dim)
+            self.loss_fn = nn.CrossEntropyLoss()
+
+        def forward(self, x):
+            embedded = self.embedding(x)
+            _, (hn, _) = self.lstm(embedded)
+            return self.fc(hn[-1])
+
+        def training_step(self, batch, batch_idx):
+            labels, texts = batch
+            outputs = self(texts)
+            loss = self.loss_fn(outputs, labels)
+            self.log("train_loss", loss, prog_bar=True)
+            return loss
+
+        def validation_step(self, batch, batch_idx):
+            labels, texts = batch
+            outputs = self(texts)
+            loss = self.loss_fn(outputs, labels)
+            preds = torch.argmax(outputs, dim=1)
+            acc = (preds == labels).float().mean()
+            self.log("val_loss", loss, prog_bar=True)
+            self.log("val_acc", acc, prog_bar=True)
+            return {"val_loss": loss, "val_acc": acc}
+            
+        def test_step(self, batch, batch_idx):
+            labels, texts = batch
+            outputs = self(texts)
+            test_loss = self.loss_fn(outputs, labels)
+            preds = torch.argmax(outputs, dim=1)
+            acc = accuracy_score(labels.cpu(), preds.cpu())
+            self.log("test_loss", test_loss, prog_bar=True)
+            self.log("test_acc", acc, prog_bar=True)
+
+        def configure_optimizers(self):
+            return torch.optim.Adam(self.parameters(), lr=self.hparams.lr)
