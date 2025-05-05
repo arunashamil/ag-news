@@ -19,14 +19,14 @@ class TextClassificationModel(pl.LightningModule):
             return self.fc(hn[-1])
 
         def training_step(self, batch, batch_idx):
-            labels, texts = batch
+            texts, labels = batch
             outputs = self(texts)
             loss = self.loss_fn(outputs, labels)
             self.log("train_loss", loss, prog_bar=True)
             return loss
 
         def validation_step(self, batch, batch_idx):
-            labels, texts = batch
+            texts, labels = batch
             outputs = self(texts)
             loss = self.loss_fn(outputs, labels)
             preds = torch.argmax(outputs, dim=1)
@@ -36,7 +36,7 @@ class TextClassificationModel(pl.LightningModule):
             return {"val_loss": loss, "val_acc": acc}
             
         def test_step(self, batch, batch_idx):
-            labels, texts = batch
+            texts, labels = batch
             outputs = self(texts)
             test_loss = self.loss_fn(outputs, labels)
             preds = torch.argmax(outputs, dim=1)

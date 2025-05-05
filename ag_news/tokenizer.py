@@ -1,4 +1,5 @@
 from torchtext.data.utils import get_tokenizer
+import torch
 
 tk = get_tokenizer('basic_english')
 
@@ -6,7 +7,7 @@ def get_tokenized_sentences(sentences):
     for sent in sentences:
         yield tk(sent)
 
-def convert_sent_to_nums(sent, vocab, print_steps=False):
-    if print_steps is True:
-        print(f'Sentence (as it is):\n{sent}\n')
-    return vocab(tk(sent))
+def pad_num_sentences(num_sent, max_pad_length):
+
+    return torch.nn.functional.pad(torch.tensor(num_sent, dtype=torch.int64), 
+                                   (0, max_pad_length - len(num_sent)), mode='constant', value=0)

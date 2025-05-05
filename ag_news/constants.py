@@ -2,6 +2,9 @@
 DATA_PATH = "../data"
 MODELS_PATH = "../checkpoints"
 
+# Data info
+NUM_CLASSES = 4
+
 # Define fixed hyperparameters
 VAL_PART = 0.95
 LR = 0.001
