@@ -1,0 +1,5 @@
+outs:
+- md5: f1b54a04b97d738b465316f10ec18d22
+  size: 29066993
+  hash: md5
+  path: ag_news_train.csv
