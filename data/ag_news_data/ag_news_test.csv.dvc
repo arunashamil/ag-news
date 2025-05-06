@@ -1,0 +1,5 @@
+outs:
+- md5: 2775286ed90c31f9401134e9f1d9de32
+  size: 1831789
+  hash: md5
+  path: ag_news_test.csv

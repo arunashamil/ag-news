@@ -6,24 +6,23 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 import hydra
 from omegaconf import DictConfig
 
-from preprocess import get_dataloaders_after_preprocess
+from dataloaders_preproc import get_dataloaders_after_preprocess
 from trainer import TextClassificationModel
-from constants import (NUM_CLASSES, LR, EPOCHS)
 
 @hydra.main(version_base=None, config_path="../config", config_name="config")
 def my_train(config : DictConfig) -> None:
 
     train_df = pd.read_csv(config["data_load"]["train_data_path"])
 
-    vocab, train_loader, val_loader = get_dataloaders_after_preprocess(train_df)
+    vocab, train_loader, val_loader = get_dataloaders_after_preprocess(train_df, config["data_load"]["vocab_path"])
     vocab_size = len(vocab.stoi) + 1
 
     model = TextClassificationModel(
         vocab_size=vocab_size,
         embed_dim=100,
         hidden_dim=128,
-        output_dim=NUM_CLASSES,
-        lr=LR
+        output_dim=config["model"]["num_classes"],
+        lr=config["training"]["lr"]
     )
 
     checkpoint_callback = ModelCheckpoint(
@@ -35,7 +34,7 @@ def my_train(config : DictConfig) -> None:
     )
 
     trainer = pl.Trainer(
-        max_epochs=EPOCHS,
+        max_epochs=config["training"]["num_epochs"],
         callbacks=[checkpoint_callback],
         accelerator="auto",
         enable_progress_bar=True,
@@ -44,13 +43,6 @@ def my_train(config : DictConfig) -> None:
 
     # Train and validate
     trainer.fit(model, train_loader, val_loader)
-
-    # Get final metrics properly
-    val_results = trainer.validate(model, val_loader)
-    # test_results = trainer.test(model, test_loader)
-
-    # print(f"\nFinal Validation Accuracy: {val_results[0]['val_acc']:.4f}")
-    # # print(f"Final Test Accuracy: {test_results[0]['test_acc']:.4f}")
 
 if __name__ == "__main__":
     my_train()
