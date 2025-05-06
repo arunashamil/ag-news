@@ -1,6 +1,0 @@
-data_load:
-  train_data_path: ../data/ag_news_train.csv
-  test_data_path: ../data/ag_news_train.csv
-model: {}
-training: {}
-logging: {}
