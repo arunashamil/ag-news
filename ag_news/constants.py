@@ -1,6 +1,6 @@
 # Paths
 DATA_PATH = "../data"
-MODELS_PATH = "../checkpoints"
+MODELS_PATH = "../models"
 
 # Data info
 NUM_CLASSES = 4
