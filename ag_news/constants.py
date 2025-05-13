@@ -14,6 +14,6 @@ BATCH_SIZE = 64
 NUM_WORKERS = 4
 
 # Column names
-X_LABEL = 'preprocessed_sentences'
-X_INIT_LABEL = 'Description'
-Y_LABEL = 'Class Index'
+X_LABEL = "preprocessed_sentences"
+X_INIT_LABEL = "Description"
+Y_LABEL = "Class Index"

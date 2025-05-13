@@ -1,20 +1,19 @@
-import pandas as pd
-
-import pytorch_lightning as pl
-from pytorch_lightning.callbacks import ModelCheckpoint
-
 import hydra
-from omegaconf import DictConfig
-
+import pandas as pd
+import pytorch_lightning as pl
 from dataloaders_preproc import get_dataloaders_after_preprocess
+from omegaconf import DictConfig
+from pytorch_lightning.callbacks import ModelCheckpoint
 from trainer import TextClassificationModel
 
-@hydra.main(version_base=None, config_path="../config", config_name="config")
-def my_train(config : DictConfig) -> None:
 
+@hydra.main(version_base=None, config_path="../config", config_name="config")
+def my_train(config: DictConfig) -> None:
     train_df = pd.read_csv(config["data_load"]["train_data_path"])
 
-    vocab, train_loader, val_loader = get_dataloaders_after_preprocess(train_df, config["data_load"]["vocab_path"])
+    vocab, train_loader, val_loader = get_dataloaders_after_preprocess(
+        train_df, config["data_load"]["vocab_path"]
+    )
     vocab_size = len(vocab.stoi) + 1
 
     model = TextClassificationModel(
@@ -22,7 +21,7 @@ def my_train(config : DictConfig) -> None:
         embed_dim=100,
         hidden_dim=128,
         output_dim=config["model"]["num_classes"],
-        lr=config["training"]["lr"]
+        lr=config["training"]["lr"],
     )
 
     checkpoint_callback = ModelCheckpoint(
@@ -30,7 +29,7 @@ def my_train(config : DictConfig) -> None:
         mode="max",
         save_top_k=1,
         dirpath=config["model"]["model_local_path"],
-        filename="model_{val_acc:.2f}"
+        filename="model_{val_acc:.2f}",
     )
 
     trainer = pl.Trainer(
@@ -38,11 +37,12 @@ def my_train(config : DictConfig) -> None:
         callbacks=[checkpoint_callback],
         accelerator="auto",
         enable_progress_bar=True,
-        logger=True
+        logger=True,
     )
 
     # Train and validate
     trainer.fit(model, train_loader, val_loader)
+
 
 if __name__ == "__main__":
     my_train()
