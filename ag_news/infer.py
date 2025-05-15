@@ -2,7 +2,7 @@ import fire
 import pandas as pd
 import pytorch_lightning as pl
 from constants import DATA_PATH, LR, MODELS_PATH, VOCAB_PATH
-from dataloaders_preproc import get_test_dataloader_after_preprocess
+from dataloaders import get_test_dataloader_after_preprocess
 from trainer import TextClassificationModel
 
 

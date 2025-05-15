@@ -1,14 +1,15 @@
 import hydra
 import pandas as pd
 import pytorch_lightning as pl
-from dataloaders_preproc import get_dataloaders_after_preprocess
+from dataloaders import get_dataloaders_after_preprocess
+from logging_utils import get_git_commit, save_metrics
 from omegaconf import DictConfig
 from pytorch_lightning.callbacks import ModelCheckpoint
 from trainer import TextClassificationModel
 
 
 @hydra.main(version_base=None, config_path="../config", config_name="config")
-def my_train(config: DictConfig) -> None:
+def main(config: DictConfig) -> None:
     train_df = pd.read_csv(config["data_load"]["train_data_path"])
 
     vocab, train_loader, val_loader = get_dataloaders_after_preprocess(
@@ -24,25 +25,51 @@ def my_train(config: DictConfig) -> None:
         lr=config["training"]["lr"],
     )
 
-    checkpoint_callback = ModelCheckpoint(
-        monitor="val_acc",
-        mode="max",
-        save_top_k=1,
-        dirpath=config["model"]["model_local_path"],
-        filename="model_{val_acc:.2f}",
+    loggers = [
+        pl.loggers.WandbLogger(
+            project=config["logging"]["project"],
+            name=config["logging"]["name"],
+            save_dir=config["logging"]["save_dir"],
+            config={
+                "val_part": config["training"]["val_part"],
+                "lr": config["training"]["lr"],
+                "num_epochs": config["training"]["num_epochs"],
+                "batch_size": config["training"]["batch_size"],
+                "num_workers": config["training"]["num_workers"],
+                "git_commit": get_git_commit(),
+            },
+        )
+    ]
+
+    callbacks = [
+        pl.callbacks.LearningRateMonitor(logging_interval="step"),
+        pl.callbacks.DeviceStatsMonitor(),
+        pl.callbacks.RichModelSummary(max_depth=2),
+    ]
+
+    callbacks.append(
+        ModelCheckpoint(
+            dirpath=config["model"]["model_local_path"],
+            filename="{epoch:02d}-{val_loss:.4f}",
+            monitor="val_loss",
+            save_top_k=config["model"]["save_top_k"],
+            every_n_epochs=config["model"]["every_n_epochs"],
+        )
     )
 
     trainer = pl.Trainer(
         max_epochs=config["training"]["num_epochs"],
-        callbacks=[checkpoint_callback],
+        log_every_n_steps=1,
         accelerator="auto",
-        enable_progress_bar=True,
-        logger=True,
+        devices="auto",
+        logger=loggers,
+        callbacks=callbacks,
     )
 
-    # Train and validate
     trainer.fit(model, train_loader, val_loader)
+
+    save_metrics(config["logging"]["api_run"], config["logging"]["name"])
 
 
 if __name__ == "__main__":
-    my_train()
+    main()
