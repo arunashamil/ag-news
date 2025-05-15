@@ -1,0 +1,6 @@
+label: wandb
+
+project: ag_news
+name: text_clf_exp
+save_dir: "."
+api_run: "arunashamil-/ag_news"

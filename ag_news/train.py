@@ -3,9 +3,10 @@ import pandas as pd
 import pytorch_lightning as pl
 from dataloaders import get_dataloaders_after_preprocess
 from logging_utils import get_git_commit, save_metrics
+from model_selector import get_model
 from omegaconf import DictConfig
 from pytorch_lightning.callbacks import ModelCheckpoint
-from trainer import TextClassificationModel
+from trainer import TextClassifier
 
 
 @hydra.main(version_base=None, config_path="../config", config_name="config")
@@ -15,15 +16,8 @@ def main(config: DictConfig) -> None:
     vocab, train_loader, val_loader = get_dataloaders_after_preprocess(
         train_df, config["data_load"]["vocab_path"]
     )
-    vocab_size = len(vocab.stoi) + 1
 
-    model = TextClassificationModel(
-        vocab_size=vocab_size,
-        embed_dim=100,
-        hidden_dim=128,
-        output_dim=config["model"]["num_classes"],
-        lr=config["training"]["lr"],
-    )
+    vocab_size = len(vocab.stoi) + 1
 
     loggers = [
         pl.loggers.WandbLogger(
@@ -40,6 +34,9 @@ def main(config: DictConfig) -> None:
             },
         )
     ]
+
+    model = get_model(vocab_size, config["model"])
+    module = TextClassifier(model, lr=config["training"]["lr"])
 
     callbacks = [
         pl.callbacks.LearningRateMonitor(logging_interval="step"),
@@ -66,7 +63,7 @@ def main(config: DictConfig) -> None:
         callbacks=callbacks,
     )
 
-    trainer.fit(model, train_loader, val_loader)
+    trainer.fit(module, train_loader, val_loader)
 
     save_metrics(config["logging"]["api_run"], config["logging"]["name"])
 

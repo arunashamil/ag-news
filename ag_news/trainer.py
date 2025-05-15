@@ -4,19 +4,16 @@ import torch.nn as nn
 from sklearn.metrics import accuracy_score
 
 
-class TextClassificationModel(pl.LightningModule):
-    def __init__(self, vocab_size, embed_dim, hidden_dim, output_dim, lr=1e-3):
+class TextClassifier(pl.LightningModule):
+    def __init__(self, model, lr):
         super().__init__()
         self.save_hyperparameters()
-        self.embedding = nn.Embedding(vocab_size, embed_dim)
-        self.lstm = nn.LSTM(embed_dim, hidden_dim, batch_first=True)
-        self.fc = nn.Linear(hidden_dim, output_dim)
+        self.model = model
+        self.lr = lr
         self.loss_fn = nn.CrossEntropyLoss()
 
     def forward(self, x):
-        embedded = self.embedding(x)
-        _, (hn, _) = self.lstm(embedded)
-        return self.fc(hn[-1])
+        return self.model(x)
 
     def training_step(self, batch, batch_idx):
         texts, labels = batch
@@ -45,4 +42,4 @@ class TextClassificationModel(pl.LightningModule):
         self.log("test_acc", acc, prog_bar=True)
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters(), lr=self.hparams.lr)
+        return torch.optim.Adam(self.parameters(), lr=self.lr)
