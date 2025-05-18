@@ -3,6 +3,7 @@ from wandb.apis.public import Api
 
 
 def save_plot(epochs, metrics, label, savepath):
+    plt.figure()
     plt.plot(epochs, metrics, label=label)
     plt.legend()
     plt.savefig(savepath)
@@ -17,8 +18,25 @@ def save_metrics(api_run, exp_name):
     epochs = [row["epoch"] for row in history if "epoch" in row]
     global_step = [row["_step"] for row in history if "_step" in row]
     train_loss = [row["train_loss"] for row in history if "train_loss" in row]
-    val_loss = [row["val_loss"] for row in history if "val_loss" in row]
-    val_acc = [row.get("val_acc") for row in history if "val_acc" in row]
+    val_loss = [
+        row.get("val_loss")
+        for row in history
+        if "val_loss" in row and row.get("val_loss") is not None
+    ]
+
+    val_acc = [
+        row.get("val_acc")
+        for row in history
+        if "val_acc" in row and row.get("val_acc") is not None
+    ]
+
+    epochs = list(set(epochs))
+    save_plot(epochs, val_loss, "Val Loss", "../plots/" + exp_name + "_val_loss.png")
+
+    if val_acc:
+        save_plot(
+            epochs, val_acc, "Val Accuracy", "../plots/" + exp_name + "_val_acc.png"
+        )
 
     save_plot(
         global_step,
@@ -26,13 +44,6 @@ def save_metrics(api_run, exp_name):
         "Train Loss",
         "../plots/" + exp_name + "_train_loss.png",
     )
-
-    save_plot(epochs, val_loss, "Val Loss", "../plots/" + exp_name + "_val_loss.png")
-
-    if val_acc:
-        save_plot(
-            epochs, val_acc, "Val Accuracy", "../plots/" + exp_name + "_val_acc.png"
-        )
 
 
 def get_git_commit():
