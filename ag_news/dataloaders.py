@@ -1,22 +1,27 @@
 import json
-import re
 from collections import Counter
 
 import pandas as pd
+import torch
 from constants import BATCH_SIZE, VAL_PART, X_INIT_LABEL, X_LABEL, Y_LABEL
-from text_dataset import TextDataset
-from tokenizer import get_tokenized_sentences, pad_num_sentences, tk
-from torch.utils.data import DataLoader, random_split
+from preprocessing import get_tokenized_sentences, pad_num_sentences, preprocessing, tk
+from torch.utils.data import DataLoader, Dataset, random_split
 from torchtext.vocab import Vocab
 
 
-def preprocessing(sent, print_steps=False):
-    sent = sent.lower()
-    sent = re.sub(r"[^\w\s]", "", sent)
-    sent = tk(sent)
-    sent = " ".join(sent)
+# Dataset class
+class TextDataset(Dataset):
+    def __init__(self, sentences, labels):
+        self.sentences = sentences
+        self.labels = labels
 
-    return sent
+    def __len__(self):
+        return len(self.sentences)
+
+    def __getitem__(self, index):
+        return torch.tensor(self.sentences[index], dtype=torch.long), torch.tensor(
+            self.labels[index], dtype=torch.long
+        )
 
 
 # Load data
