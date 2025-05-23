@@ -2,6 +2,7 @@ import hydra
 import pandas as pd
 import pytorch_lightning as pl
 from dataloaders import get_dataloaders_after_preprocess
+from download_data import download_and_unzip_from_gdrive
 from logging_utils import get_git_commit, save_metrics
 from model_selector import get_model
 from omegaconf import DictConfig
@@ -11,6 +12,9 @@ from trainer import TextClassifier
 
 @hydra.main(version_base=None, config_path="../config", config_name="config")
 def main(config: DictConfig) -> None:
+    url = config["data_load"]["url"]
+    download_and_unzip_from_gdrive(url, output_dir=config["data_load"]["data_path"])
+
     train_df = pd.read_csv(config["data_load"]["train_data_path"])
 
     vocab, train_loader, val_loader = get_dataloaders_after_preprocess(

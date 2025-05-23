@@ -1,3 +1,5 @@
 train_data_path: ../data/ag_news_data/ag_news_train.csv
-test_data_path: ../data/ag_news_data/ag_news_train.csv
+test_data_path: ../data/ag_news_data/ag_news_test.csv
+data_path: ../data
 vocab_path: ../data/vocab_data/vocab.json
+url: "https://drive.google.com/file/d/1M84gtv_8mFSkLh3SCIKcy10fr7BKP73l/view?usp=sharing"
