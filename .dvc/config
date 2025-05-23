@@ -1,6 +1,0 @@
-[core]
-    remote = models
-['remote "data"']
-    url = /home/user/dvc-storage/data
-['remote "models"']
-    url = /home/user/dvc-storage/models
