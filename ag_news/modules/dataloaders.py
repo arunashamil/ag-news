@@ -89,7 +89,7 @@ def get_dataloaders_after_preprocess(train_df, vocab_path):
         pad_num_sentences(cs, max_padding_len) for cs in x_train_sequences
     ]
     x_val_padded = [pad_num_sentences(cs, max_padding_len) for cs in x_val_sequences]
-
+    print(x_train_padded)
     y_train_np = y_train[Y_LABEL].values.astype("int64").flatten()
     y_val_np = y_val[Y_LABEL].values.astype("int64").flatten()
 

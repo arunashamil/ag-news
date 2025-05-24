@@ -6,6 +6,8 @@ from rnn_model import RNNClassifier
 
 
 def get_model(vocab_size: int, model_conf: Dict[str, Any]) -> torch.nn.Module:
+    """Model selection"""
+
     label = model_conf["label"]
 
     if label == "LSTM":

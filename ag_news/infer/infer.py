@@ -1,9 +1,9 @@
 import fire
 import pandas as pd
 import pytorch_lightning as pl
-from constants import DATA_PATH, LR, MODELS_PATH, VOCAB_PATH
-from dataloaders import get_test_dataloader_after_preprocess
-from trainer import TextClassificationModel
+from modules.constants import DATA_PATH, LR, MODELS_PATH, VOCAB_PATH
+from modules.dataloaders import get_test_dataloader_after_preprocess
+from modules.trainer import TextClassificationModel
 
 
 def main(test_dir: str, checkpoint_name: str) -> None:

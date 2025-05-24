@@ -1,13 +1,13 @@
 import hydra
 import pandas as pd
 import pytorch_lightning as pl
-from dataloaders import get_dataloaders_after_preprocess
-from download_data import download_and_unzip_from_gdrive
-from logging_utils import get_git_commit, save_metrics
-from model_selector import get_model
+from modules.dataloaders import get_dataloaders_after_preprocess
+from modules.download_data import download_and_unzip_from_gdrive
+from modules.logging_utils import get_git_commit, save_metrics
+from modules.model_selector import get_model
+from modules.trainer import TextClassifier
 from omegaconf import DictConfig
 from pytorch_lightning.callbacks import ModelCheckpoint
-from trainer import TextClassifier
 
 
 @hydra.main(version_base=None, config_path="../config", config_name="config")
