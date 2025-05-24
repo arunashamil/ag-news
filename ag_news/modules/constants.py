@@ -1,6 +1,6 @@
-DATA_PATH = "../data/ag_news_data"
-MODELS_PATH = "../models"
-VOCAB_PATH = "../data/vocab_data/vocab.json"
+DATA_PATH = "../../data/ag_news_data"
+MODELS_PATH = "../../models"
+VOCAB_PATH = "../../data/vocab_data/vocab.json"
 
 NUM_CLASSES = 4
 

@@ -1,16 +1,15 @@
 import hydra
 import pandas as pd
 import pytorch_lightning as pl
-from modules.dataloaders import get_dataloaders_after_preprocess
-from modules.download_data import download_and_unzip_from_gdrive
-from modules.logging_utils import get_git_commit, save_metrics
-from modules.model_selector import get_model
-from modules.trainer import TextClassifier
+from ag_news.modules.dataloaders import get_dataloaders_after_preprocess
+from ag_news.modules.download_data import download_and_unzip_from_gdrive
+from ag_news.modules.model_selector import get_model
+from ag_news.modules.trainer import TextClassifier
 from omegaconf import DictConfig
 from pytorch_lightning.callbacks import ModelCheckpoint
 
 
-@hydra.main(version_base=None, config_path="../config", config_name="config")
+@hydra.main(version_base=None, config_path="../../config", config_name="config")
 def main(config: DictConfig) -> None:
     url = config["data_load"]["url"]
     download_and_unzip_from_gdrive(url, output_dir=config["data_load"]["data_path"])
@@ -27,15 +26,7 @@ def main(config: DictConfig) -> None:
         pl.loggers.WandbLogger(
             project=config["logging"]["project"],
             name=config["logging"]["name"],
-            save_dir=config["logging"]["save_dir"],
-            config={
-                "val_part": config["training"]["val_part"],
-                "lr": config["training"]["lr"],
-                "num_epochs": config["training"]["num_epochs"],
-                "batch_size": config["training"]["batch_size"],
-                "num_workers": config["training"]["num_workers"],
-                "git_commit": get_git_commit(),
-            },
+            save_dir=config["logging"]["save_dir"]
         )
     ]
 
@@ -68,8 +59,6 @@ def main(config: DictConfig) -> None:
     )
 
     trainer.fit(module, train_loader, val_loader)
-
-    save_metrics(config["logging"]["api_run"], config["logging"]["name"])
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 label: wandb
 
-project: ag_news
+project: ag-news
 name: text_clf_exp
-save_dir: "."
-api_run: "arunashamil-/ag_news"
+save_dir: "../../plots/"
+api_run: "arunashamil-/ag-news"

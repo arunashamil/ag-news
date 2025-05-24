@@ -1,0 +1,31 @@
+{
+  "os": "Linux-6.8.0-59-generic-x86_64-with-glibc2.35",
+  "python": "CPython 3.12.9",
+  "startedAt": "2025-05-24T16:01:23.041041Z",
+  "program": "/home/user/ag-news/ag_news/train/train.py",
+  "codePath": "ag_news/train/train.py",
+  "git": {
+    "remote": "git@github.com:arunashamil/ag-news.git",
+    "commit": "3658765305a7d3ddc270a27d2a114b407619f64e"
+  },
+  "email": "shamil.a@phystech.su",
+  "root": "../../plots/",
+  "host": "robinary",
+  "executable": "/home/user/.cache/pypoetry/virtualenvs/ag-news-ntzQlEAb-py3.12/bin/python",
+  "codePathLocal": "train.py",
+  "cpu_count": 8,
+  "cpu_count_logical": 16,
+  "disk": {
+    "/": {
+      "total": "157396975616",
+      "used": "109200723968"
+    }
+  },
+  "memory": {
+    "total": "67010760704"
+  },
+  "cpu": {
+    "count": 8,
+    "countLogical": 16
+  }
+}

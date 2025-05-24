@@ -1,9 +1,9 @@
 import fire
 import pandas as pd
 import pytorch_lightning as pl
-from modules.constants import DATA_PATH, LR, MODELS_PATH, VOCAB_PATH
-from modules.dataloaders import get_test_dataloader_after_preprocess
-from modules.trainer import TextClassificationModel
+from ag_news.modules.constants import DATA_PATH, LR, MODELS_PATH, VOCAB_PATH
+from ag_news.modules.dataloaders import get_test_dataloader_after_preprocess
+from ag_news.modules.trainer import TextClassifier
 
 
 def main(test_dir: str, checkpoint_name: str) -> None:
@@ -11,7 +11,7 @@ def main(test_dir: str, checkpoint_name: str) -> None:
     test_df = pd.read_csv(test_csv)
 
     test_loader = get_test_dataloader_after_preprocess(test_df, VOCAB_PATH)
-    module = TextClassificationModel.load_from_checkpoint(
+    module = TextClassifier.load_from_checkpoint(
         f"{MODELS_PATH}/{checkpoint_name}", lr=LR
     )
 

@@ -1,8 +1,8 @@
 from typing import Any, Dict
 
 import torch
-from lstm_model import LSTMClassifier
-from rnn_model import RNNClassifier
+from ag_news.modules.lstm_model import LSTMClassifier
+from ag_news.modules.rnn_model import RNNClassifier
 
 
 def get_model(vocab_size: int, model_conf: Dict[str, Any]) -> torch.nn.Module:
