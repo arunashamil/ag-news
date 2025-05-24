@@ -1,5 +1,5 @@
 [project]
-name = "ag_news"
+name = "ag-news"
 version = "0.1.0"
 description = "Classification task"
 authors = [
