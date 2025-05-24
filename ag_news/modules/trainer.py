@@ -5,6 +5,10 @@ from sklearn.metrics import accuracy_score
 
 
 class TextClassifier(pl.LightningModule):
+    """Module for training and evaluation models
+    for text classification task
+    """
+
     def __init__(self, model, lr):
         super().__init__()
         self.save_hyperparameters()

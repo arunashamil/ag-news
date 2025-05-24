@@ -21,8 +21,9 @@ from ag_news.modules.preprocessing import (
 )
 
 
-# Dataset class
 class TextDataset(Dataset):
+    """Dataset class for torch dataloaders"""
+
     def __init__(self, sentences, labels):
         self.sentences = sentences
         self.labels = labels
@@ -36,8 +37,18 @@ class TextDataset(Dataset):
         )
 
 
-# Load data
-def get_dataloaders_after_preprocess(train_df, vocab_path):
+def get_dataloaders_after_preprocess(train_df: pd.DataFrame, vocab_path: str):
+    """Prepocesses input train data, writes down a vocabulary, makes dataloaders from train data
+    Args:
+        train_df (pd.DataFrame): train data (to be splitted into train and val)
+        vocab_path (str): vocabulary from train data path
+
+    Returns:
+        vocab (dict): vocabulary dictionary
+        train_loader (torch.utils.data.DataLoader): dataloader from train
+        val_loader (torch.utils.data.DataLoader): dataloader from validation
+    """
+
     # Apply function to both dataframes
     train_df[X_LABEL] = train_df[X_INIT_LABEL].apply(preprocessing)
 
@@ -120,6 +131,15 @@ def get_dataloaders_after_preprocess(train_df, vocab_path):
 
 
 def get_test_dataloader_after_preprocess(test_df, vocab_path):
+    """Prepocesses input test data, makes dataloaders it
+    Args:
+        test_df (pd.DataFrame): test data
+        vocab_path (str): vocabulary from train data path
+
+    Returns:
+        test_loader (torch.utils.data.DataLoader): dataloader from test
+    """
+
     # Apply function to both dataframes
     test_df[X_LABEL] = test_df[X_INIT_LABEL].apply(preprocessing)
 

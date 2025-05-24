@@ -14,7 +14,7 @@ def preprocessing(sent: str) -> str:
         sent (str): a sentence to be preprocessed
 
     Returns:
-        prepro_sent (str): preprocessed sentence
+        str: preprocessed sentence
     """
 
     prepro_sent = sent.lower()
@@ -32,13 +32,22 @@ def get_tokenized_sentences(sentences: list) -> Iterator[list[str]]:
         sentences (list): sentences to be tokenized
 
     Yields:
-        tk(sent) (list[str]): list of string tokens for each sentence
+        list[str]: list of string tokens for each sentence
     """
     for sent in sentences:
         yield tk(sent)
 
 
-def pad_num_sentences(num_sent, max_pad_length):
+def pad_num_sentences(num_sent: list, max_pad_length: int) -> torch.tensor:
+    """Pads tokenized sentences
+
+    Args:
+        num_sent (list): tokenized sentence
+        max_pad_length (int): controls padding length
+
+    Returns:
+        torch.tensor: tokenized sentence after padding
+    """
     return torch.nn.functional.pad(
         torch.tensor(num_sent, dtype=torch.int64),
         (0, max_pad_length - len(num_sent)),

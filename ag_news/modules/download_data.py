@@ -5,15 +5,15 @@ import gdown
 
 
 def download_and_unzip_from_gdrive(
-    gdrive_url, output_dir, zip_filename="ag_news_data.zip"
-):
+    gdrive_url: str, output_dir: str, zip_filename="ag_news_data.zip"
+) -> None:
     """
     Downloads a zip file from Google Drive and extracts it to the output directory.
 
-    Parameters:
-        gdrive_url (str): The sharable Google Drive URL to the zip file.
-        output_dir (str): Path to the output directory where contents will be extracted.
-        zip_filename (str): Local filename for the downloaded zip file.
+    Args:
+        gdrive_url (str): Google Drive URL to the zip file
+        output_dir (str): Path to the output directory where contents will be extracted
+        zip_filename (str): Local filename for the downloaded zip file
     """
     os.makedirs(output_dir, exist_ok=True)
 
