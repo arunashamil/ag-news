@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 import torch
+
 from ag_news.modules.lstm_model import LSTMClassifier
 from ag_news.modules.rnn_model import RNNClassifier
 

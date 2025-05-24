@@ -1,12 +1,13 @@
 import hydra
 import pandas as pd
 import pytorch_lightning as pl
+from omegaconf import DictConfig
+from pytorch_lightning.callbacks import ModelCheckpoint
+
 from ag_news.modules.dataloaders import get_dataloaders_after_preprocess
 from ag_news.modules.download_data import download_and_unzip_from_gdrive
 from ag_news.modules.model_selector import get_model
 from ag_news.modules.trainer import TextClassifier
-from omegaconf import DictConfig
-from pytorch_lightning.callbacks import ModelCheckpoint
 
 
 @hydra.main(version_base=None, config_path="../../config", config_name="config")
@@ -26,7 +27,7 @@ def main(config: DictConfig) -> None:
         pl.loggers.WandbLogger(
             project=config["logging"]["project"],
             name=config["logging"]["name"],
-            save_dir=config["logging"]["save_dir"]
+            save_dir=config["logging"]["save_dir"],
         )
     ]
 

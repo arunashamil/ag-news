@@ -1,6 +1,7 @@
 import fire
 import pandas as pd
 import pytorch_lightning as pl
+
 from ag_news.modules.constants import DATA_PATH, LR, MODELS_PATH, VOCAB_PATH
 from ag_news.modules.dataloaders import get_test_dataloader_after_preprocess
 from ag_news.modules.trainer import TextClassifier

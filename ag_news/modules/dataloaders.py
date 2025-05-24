@@ -3,10 +3,22 @@ from collections import Counter
 
 import pandas as pd
 import torch
-from ag_news.modules.constants import BATCH_SIZE, VAL_PART, X_INIT_LABEL, X_LABEL, Y_LABEL
-from ag_news.modules.preprocessing import get_tokenized_sentences, pad_num_sentences, preprocessing, tk
 from torch.utils.data import DataLoader, Dataset, random_split
 from torchtext.vocab import Vocab
+
+from ag_news.modules.constants import (
+    BATCH_SIZE,
+    VAL_PART,
+    X_INIT_LABEL,
+    X_LABEL,
+    Y_LABEL,
+)
+from ag_news.modules.preprocessing import (
+    get_tokenized_sentences,
+    pad_num_sentences,
+    preprocessing,
+    tk,
+)
 
 
 # Dataset class
@@ -89,7 +101,7 @@ def get_dataloaders_after_preprocess(train_df, vocab_path):
         pad_num_sentences(cs, max_padding_len) for cs in x_train_sequences
     ]
     x_val_padded = [pad_num_sentences(cs, max_padding_len) for cs in x_val_sequences]
-    
+
     y_train_np = y_train[Y_LABEL].values.astype("int64").flatten()
     y_val_np = y_val[Y_LABEL].values.astype("int64").flatten()
 
