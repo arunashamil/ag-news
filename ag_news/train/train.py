@@ -32,7 +32,7 @@ def main(config: DictConfig) -> None:
     ]
 
     model = get_model(vocab_size, config["model"])
-    module = TextClassifier(model, lr=config["training"]["lr"])
+    module = TextClassifier(model, lr=config["training"]["lr"], vocab_size=vocab_size)
 
     callbacks = [
         pl.callbacks.LearningRateMonitor(logging_interval="step"),

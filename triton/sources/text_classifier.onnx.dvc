@@ -1,0 +1,5 @@
+outs:
+- md5: f53ef33d9698fb20ec37cff391ce2556
+  size: 37736257
+  hash: md5
+  path: text_classifier.onnx

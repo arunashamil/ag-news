@@ -9,11 +9,12 @@ class TextClassifier(pl.LightningModule):
     for text classification task
     """
 
-    def __init__(self, model, lr):
+    def __init__(self, model, lr, vocab_size):
         super().__init__()
         self.save_hyperparameters()
         self.model = model
         self.lr = lr
+        self.vocab_size = vocab_size
         self.loss_fn = nn.CrossEntropyLoss()
 
     def forward(self, x):
