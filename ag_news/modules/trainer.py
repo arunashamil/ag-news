@@ -1,7 +1,6 @@
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
-from sklearn.metrics import accuracy_score
 
 
 class TextClassifier(pl.LightningModule):
@@ -9,12 +8,13 @@ class TextClassifier(pl.LightningModule):
     for text classification task
     """
 
-    def __init__(self, model, lr, vocab_size):
+    def __init__(self, model, lr, vocab_size, dropout):
         super().__init__()
         self.save_hyperparameters()
         self.model = model
         self.lr = lr
         self.vocab_size = vocab_size
+        self.dropout = dropout
         self.loss_fn = nn.CrossEntropyLoss()
 
     def forward(self, x):
@@ -42,7 +42,8 @@ class TextClassifier(pl.LightningModule):
         outputs = self(texts)
         test_loss = self.loss_fn(outputs, labels)
         preds = torch.argmax(outputs, dim=1)
-        acc = accuracy_score(labels.cpu(), preds.cpu())
+
+        acc = (preds == labels).float().mean()
         self.log("test_loss", test_loss, prog_bar=True)
         self.log("test_acc", acc, prog_bar=True)
 

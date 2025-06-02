@@ -5,16 +5,12 @@ from omegaconf import DictConfig
 from pytorch_lightning.callbacks import ModelCheckpoint
 
 from ag_news.modules.dataloaders import get_dataloaders_after_preprocess
-from ag_news.modules.download_data import download_and_unzip_from_gdrive
 from ag_news.modules.model_selector import get_model
 from ag_news.modules.trainer import TextClassifier
 
 
 @hydra.main(version_base=None, config_path="../../config", config_name="config")
 def main(config: DictConfig) -> None:
-    url = config["data_load"]["url"]
-    download_and_unzip_from_gdrive(url, output_dir=config["data_load"]["data_path"])
-
     train_df = pd.read_csv(config["data_load"]["train_data_path"])
 
     vocab, train_loader, val_loader = get_dataloaders_after_preprocess(
@@ -31,8 +27,13 @@ def main(config: DictConfig) -> None:
         )
     ]
 
-    model = get_model(vocab_size, config["model"])
-    module = TextClassifier(model, lr=config["training"]["lr"], vocab_size=vocab_size)
+    model = get_model(vocab_size, config)
+    module = TextClassifier(
+        model,
+        lr=config["training"]["lr"],
+        vocab_size=vocab_size,
+        dropout=config["training"]["dropout"],
+    )
 
     callbacks = [
         pl.callbacks.LearningRateMonitor(logging_interval="step"),

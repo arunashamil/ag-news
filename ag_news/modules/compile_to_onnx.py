@@ -9,7 +9,7 @@ from ag_news.modules.trainer import TextClassifier
 
 def main(checkpoint_name: str) -> None:
     module = TextClassifier.load_from_checkpoint(f"{MODELS_PATH}/{checkpoint_name}")
-
+    print("Successfully loaded from checkpoints")
     module.eval()
 
     vocab_size = module.hparams.vocab_size
@@ -22,8 +22,10 @@ def main(checkpoint_name: str) -> None:
     ort_session = onnxruntime.InferenceSession(ONNX_PATH)
     input_name = ort_session.get_inputs()[0].name
     ort_inputs = {input_name: input_array.numpy().astype(np.int64)}
-    ort_session.run(None, ort_inputs)
-    print("ONNX model check passed")
+    ort_outs = ort_session.run(None, ort_inputs)
+
+    if ort_outs:
+        print("ONNX model check passed")
 
 
 if __name__ == "__main__":
