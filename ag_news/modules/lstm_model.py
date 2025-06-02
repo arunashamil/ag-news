@@ -4,11 +4,18 @@ import torch
 class LSTMClassifier(torch.nn.Module):
     """LSTM model for text classification"""
 
-    def __init__(self, vocab_size: int, num_classes: int):
+    def __init__(self, vocab_size: int, num_classes: int, dropout_prob: float = 0.5):
         super().__init__()
-        # self.save_hyperparameters()
         self.embedding = torch.nn.Embedding(vocab_size, 100)
-        self.lstm = torch.nn.LSTM(100, 128, batch_first=True)
+        self.lstm = torch.nn.LSTM(
+            input_size=100,
+            hidden_size=128,
+            num_layers=2,
+            batch_first=True,
+            dropout=dropout_prob,
+        )
+
+        self.dropout = torch.nn.Dropout(dropout_prob)
         self.fc = torch.nn.Linear(128, num_classes)
 
     def forward(self, x):

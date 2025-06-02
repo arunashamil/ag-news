@@ -47,4 +47,8 @@ class TextClassifier(pl.LightningModule):
         self.log("test_acc", acc, prog_bar=True)
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters(), lr=self.lr)
+        optimizer = torch.optim.Adam(self.parameters())
+        scheduler = torch.optim.lr_scheduler.ExponentialLR(
+            optimizer=optimizer, gamma=0.5
+        )
+        return {"optimizer": optimizer, "lr_scheduler": scheduler}
