@@ -14,6 +14,8 @@ def main(test_dir: str, checkpoint_name: str) -> None:
     vocab_size, test_loader = get_test_dataloader_after_preprocess(test_df, VOCAB_PATH)
     module = TextClassifier.load_from_checkpoint(f"{MODELS_PATH}/{checkpoint_name}")
 
+    module.eval()
+
     trainer = pl.Trainer(
         accelerator="auto",
         devices="auto",
