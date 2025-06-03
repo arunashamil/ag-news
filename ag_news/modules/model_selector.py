@@ -14,6 +14,9 @@ def get_model(vocab_size: int, conf: Any) -> torch.nn.Module:
     if label == "LSTM":
         return LSTMClassifier(
             vocab_size=vocab_size,
+            input_size=conf["model"]["input_size"],
+            hidden_size=conf["model"]["hidden_size"],
+            num_layers=conf["model"]["num_layers"],
             num_classes=conf["model"]["num_classes"],
             dropout=conf["training"]["dropout"],
         )
@@ -21,6 +24,9 @@ def get_model(vocab_size: int, conf: Any) -> torch.nn.Module:
     if label == "RNN":
         return RNNClassifier(
             vocab_size=vocab_size,
+            input_size=conf["model"]["input_size"],
+            hidden_size=conf["model"]["hidden_size"],
+            num_layers=conf["model"]["num_layers"],
             num_classes=conf["model"]["num_classes"],
             dropout=conf["training"]["dropout"],
         )

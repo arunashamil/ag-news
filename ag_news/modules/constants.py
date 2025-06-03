@@ -5,7 +5,7 @@ ONNX_PATH = "../../triton/sources/text_classifier.onnx"
 
 NUM_CLASSES = 4
 
-VAL_PART = 0.95
+VAL_PART = 0.05
 LR = 0.001
 BATCH_SIZE = 64
 NUM_WORKERS = 4

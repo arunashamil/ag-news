@@ -11,7 +11,7 @@ def main(test_dir: str, checkpoint_name: str) -> None:
     test_csv = f"{DATA_PATH}/{test_dir}"
     test_df = pd.read_csv(test_csv)
 
-    vocab_size, test_loader = get_test_dataloader_after_preprocess(test_df, VOCAB_PATH)
+    _, test_loader = get_test_dataloader_after_preprocess(test_df, VOCAB_PATH)
     module = TextClassifier.load_from_checkpoint(f"{MODELS_PATH}/{checkpoint_name}")
 
     module.eval()

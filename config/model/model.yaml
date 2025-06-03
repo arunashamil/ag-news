@@ -1,6 +1,10 @@
+input_size: 100
+hidden_size: 128
+num_layers: 2
 num_classes: 4
+
 model_local_path: ../../models
 save_top_k: 5
 every_n_epochs: 1
 
-label: LSTM
+label: RNN

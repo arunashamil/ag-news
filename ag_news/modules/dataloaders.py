@@ -54,8 +54,8 @@ def get_dataloaders_after_preprocess(train_df: pd.DataFrame, vocab_path: str):
 
     dataset = TextDataset(train_df[X_LABEL], train_df[Y_LABEL])
 
-    train_size = int(VAL_PART * len(dataset))
-    val_size = len(dataset) - train_size
+    val_size = int(VAL_PART * len(dataset))
+    train_size = len(dataset) - val_size
 
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
