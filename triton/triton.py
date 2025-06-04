@@ -4,7 +4,7 @@ import re
 import numpy as np
 import tritonclient.http as httpclient
 
-VOCAB_PATH = "../data/vocab_data/vocab.json"
+VOCAB_PATH = "vocab.json"
 MAX_PAD_LEN = 90
 X_LABEL = "preprocessed_sentences"
 UNK_TOKEN = "<unk>"
