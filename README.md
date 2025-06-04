@@ -10,12 +10,14 @@
 
 ## Формат входных и выходных данных
 Входные данные:
+
 Датасет AG News, используемый при обучении, имеет следующую структуру: всего
 имеется 120000 объектов (по 30000 на каждую новостную категорию) для тренировки и
 7600 (по 1900 на каждую тему) для теста. У каждого объекта выборки по 3 поля: индекс
 класса, название статьи, ее описание.
 
 Выходные данные:
+
 Модель предсказывает тему новостной статьи как один из вышеперечисленных классов.
 
 ## Метрики
@@ -55,6 +57,7 @@
 За основу данного проекта была взята [модель](https://github.com/axiom2018/AG-News-Classification/blob/main/AG%20News%203%20Models%201%20used%20with%20Optuna.ipynb).
 
 0. Предобработка данных
+
 Данные из .csv файлов конвертируются в pd.DataFrame, затем посредством класса 
 
 ```python
@@ -75,7 +78,7 @@ class TextDataset(Dataset):
 ```
 мы преобразуем их в датасет (только после этого шага можно применить метод random_split). По всем словам, имеющимся в тренировочном датасете, мы составляем словарь и токенизируем тексты. Для дальнейшего разбиения на батчи дополняем короткие строки токеном <pad>. При предобработке тестовых данных неизвестные слова токенизируются как <unk>.
 
-В данном проекте активно используется библиотека [PyTorch](https://pytorch.org/), поэтому после предобработки подаем наши данные в [torch.nn.DataLoader](https://docs.pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader), это упрощает написание кода и ускоряет загрузку данных.
+В данном проекте активно используется библиотека [PyTorch](https://pytorch.org/), поэтому после предобработки подаем наши данные в [torch.nn.DataLoader](https://docs.pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader), это упрощает написание кода и ускоряет загрузку данных;
 
 1. Модель:
  
@@ -92,14 +95,87 @@ class TextDataset(Dataset):
 self.dropout = torch.nn.Dropout(dropout)
 self.fc = torch.nn.Linear(hidden_size, num_classes)
 ```
-Аналогичную структуру имеет модель с линейным слоем RNN.
+Аналогичную структуру имеет модель с линейным слоем RNN;
 
 2. Оптимизатор
-В качестве оптимизатора в данной задаче используется [Adam][https://docs.pytorch.org/docs/stable/generated/torch.optim.Adam.html] с LR scheduler-ом [ExponentialLR](https://docs.pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.ExponentialLR.html).
 
-3. Минимизируем функцию потерь [CrossEntropyLoss](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html)
+В качестве оптимизатора в данной задаче используется [Adam][https://docs.pytorch.org/docs/stable/generated/torch.optim.Adam.html] с LR scheduler-ом [ExponentialLR](https://docs.pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.ExponentialLR.html);
 
-4. Модель обучается 10 эпох
+3. Минимизируем функцию потерь [CrossEntropyLoss](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html);
+
+4. Модель обучается 10 эпох.
 
 ## Внедрение
 Модель может использоваться как пакет для классификации новостных статей. В проекте осуществляется перевод обученной модели в формат .onnx для дальнейшей работы над моделью как продуктом.
+
+# Работа с проектом
+## Setup
+Клонирование репозитория
+```
+git clone https://github.com/arunashamil/ag-news.git
+```
+
+После клонирования репозитория перейдите в его папку
+```
+cd ag-news
+```
+
+Установите Poetry для управления зависимостями
+```
+pip install poetry==2.1.2
+```
+
+Установка зависимостей проекта
+```
+poetry install
+```
+
+Установка хуков для pre-commit
+```
+poetry run pre-commit install
+```
+Запустите проверки
+```
+poetry run pre-commit run --all-files
+```
+
+## Train
+Активируйте окружение
+```
+poetry env activate
+```
+Для отслеживания метрик в ходе обучения и валидации необходимо авторизоваться в WandB. По предложенной ссылке перейдите в личный кабинет, скопируйте и введите API-ключ
+```
+poetry run wandb login --relogin
+```
+
+Скачайте данные для обучения и тестирования модели
+```
+cd ag_news/data_load
+
+poetry run python download_data.py
+```
+
+Запустите модель обучаться
+```
+cd ../train
+
+poetry run python train.py
+```
+
+После того, как модель обучится, запустите систему предсказаний на тестовых данных ag_news_test.csv с помощью модели, сохраненной во время обучения в папке models в файле .ckpt.
+
+Название вашего файла может отличаться. Пример запуска:
+
+```
+cd ../infer
+
+poetry run python infer.py ag_news_test.csv epoch=09-val_loss=0.3778.ckpt
+```
+
+Обученную модель можно перевести из .ckpt в формат .onnx. Не забудьте поменять название файла:
+```
+cd ../modules
+
+poetry run python compile_to_onnx.py epoch=09-val_loss=0.3778.ckpt
+```
