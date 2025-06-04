@@ -187,6 +187,23 @@ poetry run pre-commit install
 poetry run pre-commit run --all-files
 ```
 
+## Структура папок
+
+```
+ag_news
+\----data_load
+|        ---download_data.py
+|
+\----infer
+|        ---infer.py
+|
+\----modules
+|        ---compile_to_onnx.py
+|
+\----train
+|        ---train.py
+```
+
 ## Train
 
 Активируйте окружение
@@ -197,7 +214,7 @@ poetry env activate
 
 Для отслеживания метрик в ходе обучения и валидации необходимо авторизоваться в
 WandB. По предложенной ссылке перейдите в личный кабинет, скопируйте и введите
-API-ключ
+API-ключ в командную
 
 ```
 poetry run wandb login --relogin
