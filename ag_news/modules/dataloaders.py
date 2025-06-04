@@ -38,7 +38,7 @@ class TextDataset(Dataset):
         )
 
 
-def get_dataloaders_after_preprocess(train_df: pd.DataFrame, vocab_path: str):
+def get_dataloaders_after_preprocess(train_df, vocab_path):
     """Prepocesses input train data, writes down a vocabulary, makes dataloaders from train data
     Args:
         train_df (pd.DataFrame): train data (to be splitted into train and val)

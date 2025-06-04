@@ -4,8 +4,9 @@ import torch.nn as nn
 
 
 class TextClassifier(pl.LightningModule):
-    """Module for training and evaluation models
-    for text classification task
+    """
+    Module for training and evaluation models
+    for text classification task.
     """
 
     def __init__(self, model, lr, vocab_size, dropout):

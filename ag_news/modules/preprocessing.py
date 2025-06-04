@@ -1,5 +1,4 @@
 import re
-from typing import Iterator
 
 import torch
 from torchtext.data.utils import get_tokenizer
@@ -7,7 +6,7 @@ from torchtext.data.utils import get_tokenizer
 tk = get_tokenizer("basic_english")
 
 
-def preprocessing(sent: str) -> str:
+def preprocessing(sent):
     """Preprocesses a sentence
 
     Args:
@@ -25,7 +24,7 @@ def preprocessing(sent: str) -> str:
     return prepro_sent
 
 
-def get_tokenized_sentences(sentences: list) -> Iterator[list[str]]:
+def get_tokenized_sentences(sentences):
     """Tokenizes sentences
 
     Args:
@@ -38,7 +37,7 @@ def get_tokenized_sentences(sentences: list) -> Iterator[list[str]]:
         yield tk(sent)
 
 
-def pad_num_sentences(num_sent: list, max_pad_length: int) -> torch.tensor:
+def pad_num_sentences(num_sent, max_pad_length):
     """Pads tokenized sentences
 
     Args:

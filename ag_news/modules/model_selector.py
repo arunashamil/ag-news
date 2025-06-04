@@ -1,12 +1,8 @@
-from typing import Any
-
-import torch
-
 from ag_news.modules.lstm_model import LSTMClassifier
 from ag_news.modules.rnn_model import RNNClassifier
 
 
-def get_model(vocab_size: int, conf: Any) -> torch.nn.Module:
+def get_model(vocab_size, conf):
     """Model selection"""
 
     label = conf["model"]["label"]
