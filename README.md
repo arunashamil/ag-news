@@ -202,6 +202,11 @@ ag_news
 |
 \----train
 |        ---train.py
+|----config
+|
+|----data
+|
+|----models
 ```
 
 ## Train
