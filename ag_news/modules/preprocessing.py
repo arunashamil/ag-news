@@ -7,7 +7,8 @@ tk = get_tokenizer("basic_english")
 
 
 def preprocessing(sent):
-    """Preprocesses a sentence
+    """
+    Preprocesses a sentence
 
     Args:
         sent (str): a sentence to be preprocessed
@@ -25,7 +26,8 @@ def preprocessing(sent):
 
 
 def get_tokenized_sentences(sentences):
-    """Tokenizes sentences
+    """
+    Tokenizes sentences
 
     Args:
         sentences (list): sentences to be tokenized
@@ -38,7 +40,8 @@ def get_tokenized_sentences(sentences):
 
 
 def pad_num_sentences(num_sent, max_pad_length):
-    """Pads tokenized sentences
+    """
+    Pads tokenized sentences
 
     Args:
         num_sent (list): tokenized sentence
