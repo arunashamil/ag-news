@@ -263,3 +263,44 @@ cd ../modules
 
 poetry run python compile_to_onnx.py epoch=09-val_loss=0.3778.ckpt
 ```
+
+## Inference server
+
+Перейдите в корневую директорию проекта и из нее в папку triton
+
+```
+cd triton
+```
+
+Установите [Docker](https://www.docker.com/products/docker-desktop/). После
+успешной установки убедитесь, что активна сессия
+
+```
+docker ps
+```
+
+Соберите образ вашего веб-сервиса
+
+```
+docker-compose build --no-cache web --progress=plain
+```
+
+Соберите сервисы
+
+```
+docker-compose build --no-cache
+```
+
+Запустите сервисы
+
+```
+docker-compose up
+```
+
+Сервер доступен по адресу https://0.0.0.0:8080
+
+Чтобы выйти, нажмите Ctrl+C. Для завершения сессии Docker-а исполните команду
+
+```
+docker-compose down
+```
