@@ -204,7 +204,9 @@ ag_news
 |        ---train.py
 |----config
 |
-|----data
+\----data
+|        ---\vocab_data
+|               ---vocab.json
 |
 |----models
 ```
@@ -266,11 +268,13 @@ poetry run python compile_to_onnx.py epoch=09-val_loss=0.3778.ckpt
 
 ## Inference server
 
-Перейдите в корневую директорию проекта и из нее в папку triton
+Перейдите в корневую директорию проекта и из нее в папку triton.
 
 ```
 cd triton
 ```
+
+Скопируйте файл vocab.json из папки data/vocab_data в папку triton.
 
 Установите [Docker](https://www.docker.com/products/docker-desktop/). После
 успешной установки убедитесь, что активна сессия
