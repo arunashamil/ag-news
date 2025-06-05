@@ -1,7 +1,8 @@
 DATA_PATH = "../../data/ag_news_data"
 MODELS_PATH = "../../models"
 VOCAB_PATH = "../../data/vocab_data/vocab.json"
-ONNX_PATH = "../../triton/sources/text_classifier.onnx"
+ONNX_PATH = "../../triton/model_repository/text_classifier/1/model.onnx"
+
 
 NUM_CLASSES = 4
 
