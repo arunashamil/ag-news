@@ -132,7 +132,7 @@ self.fc = torch.nn.Linear(hidden_size, num_classes)
 2. Оптимизатор
 
 В качестве оптимизатора в данной задаче используется
-[Adam][https://docs.pytorch.org/docs/stable/generated/torch.optim.Adam.html] с
+[Adam](https://docs.pytorch.org/docs/stable/generated/torch.optim.Adam.html) с
 LR scheduler-ом
 [ExponentialLR](https://docs.pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.ExponentialLR.html);
 
@@ -151,37 +151,37 @@ LR scheduler-ом
 
 ## Setup
 
-Клонирование репозитория
+Клонирование репозитория:
 
 ```
 git clone https://github.com/arunashamil/ag-news.git
 ```
 
-После клонирования репозитория перейдите в его папку
+После клонирования репозитория перейдите в его папку:
 
 ```
 cd ag-news
 ```
 
-Установите Poetry для управления зависимостями
+Установите Poetry для управления зависимостями:
 
 ```
 pip install poetry==2.1.2
 ```
 
-Установка зависимостей проекта
+Установка зависимостей проекта:
 
 ```
 poetry install
 ```
 
-Установка хуков для pre-commit
+Установка хуков для pre-commit:
 
 ```
 poetry run pre-commit install
 ```
 
-Запустите проверки
+Запустите проверки:
 
 ```
 poetry run pre-commit run --all-files
@@ -213,7 +213,7 @@ ag_news
 
 ## Train
 
-Активируйте окружение
+Активируйте окружение:
 
 ```
 poetry env activate
@@ -221,13 +221,13 @@ poetry env activate
 
 Для отслеживания метрик в ходе обучения и валидации необходимо авторизоваться в
 WandB. По предложенной ссылке перейдите в личный кабинет, скопируйте и введите
-API-ключ в командную
+API-ключ в командную строку:
 
 ```
 poetry run wandb login --relogin
 ```
 
-Скачайте данные для обучения и тестирования модели
+Скачайте данные для обучения и тестирования модели:
 
 ```
 cd ag_news/data_load
@@ -235,7 +235,7 @@ cd ag_news/data_load
 poetry run python download_data.py
 ```
 
-Запустите модель обучаться
+Запустите модель обучаться:
 
 ```
 cd ../train
@@ -277,25 +277,25 @@ cd triton
 Скопируйте файл vocab.json из папки data/vocab_data в папку triton.
 
 Установите [Docker](https://www.docker.com/products/docker-desktop/). После
-успешной установки убедитесь, что активна сессия
+успешной установки убедитесь, что активна сессия:
 
 ```
 docker ps
 ```
 
-Соберите образ вашего веб-сервиса
+Соберите образ вашего веб-сервиса:
 
 ```
 docker-compose build --no-cache web --progress=plain
 ```
 
-Соберите сервисы
+Соберите сервисы:
 
 ```
 docker-compose build --no-cache
 ```
 
-Запустите сервисы
+Запустите сервисы:
 
 ```
 docker-compose up
